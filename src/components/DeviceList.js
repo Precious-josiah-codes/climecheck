@@ -1,4 +1,5 @@
-const DeviceList = ({ openDeviceReadingsModal }) => {
+const DeviceList = ({ goToPollutants, devices }) => {
+  console.log(devices, "devices");
   return (
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="w-full text-left text-gray-500 border border-gray-500 overflow-hidden">
@@ -10,16 +11,19 @@ const DeviceList = ({ openDeviceReadingsModal }) => {
           </tr>
         </thead>
         <tbody>
-          <tr
-            class="bg-primaryColor text-[1rem] text-gray-300 cursor-pointer hover:bg-tetiary hover:text-white"
-            onClick={() => openDeviceReadingsModal(true)}
-          >
-            <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
-              #1
-            </th>
-            <td class="px-6 py-4">Sensor Device</td>
-            <td class="px-6 py-4">91029</td>
-          </tr>
+          {devices.map((device, index) => (
+            <tr
+              class="bg-primaryColor text-[1rem] text-gray-300 cursor-pointer hover:bg-tetiary hover:text-white"
+              key={index}
+              onClick={goToPollutants}
+            >
+              <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+                #{index + 1}
+              </th>
+              <td class="px-6 py-4">{device.deviceName}</td>
+              <td class="px-6 py-4">{device.sensorNumber}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

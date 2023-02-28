@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { pollutantsContext } from "../../state/context/pollutants";
 import Google from "../../SvgIcons/Icons";
 
 const SignUp = () => {
+  const { authenticateUser } = useContext(pollutantsContext);
   return (
     <section className="text-gray-400 bg-primaryColor body-font h-screen flex items-center px-6">
       {/* start signup form */}
@@ -18,19 +21,20 @@ const SignUp = () => {
           impedit dolore deleniti nulla itaque iste tempora earum nisi sapiente
           incidunt est.
         </p>
-        <Link to="/">
-          <button class="inline-flex justify-center items-center space-x-3 text-white bg-tetiary border-0 py-2 px-6 focus:outline-none hover:bg-secondaryColor rounded text-lg mt-6 sm:w-[70%] w-full">
-            <div>Sign up with Google</div> <Google />
-          </button>
-        </Link>
-        <div className="mt-4">
+        <button
+          onClick={authenticateUser}
+          class="inline-flex justify-center items-center space-x-3 text-white bg-tetiary border-0 py-2 px-6 focus:outline-none hover:bg-secondaryColor rounded text-lg mt-6 sm:w-[70%] w-full"
+        >
+          <div>Sign in with Google</div> <Google />
+        </button>
+        {/* <div className="mt-4">
           Already have an account?
           <Link to="/auth/sign_in">
             <span className="underline text-tetiary font-bold cursor-pointer ml-2">
               Sign In
             </span>
           </Link>
-        </div>
+        </div> */}
       </div>
       {/* end signup form */}
 
