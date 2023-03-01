@@ -5,13 +5,13 @@ import { pollutantsContext } from "../state/context/pollutants";
 import AddDeviceModal from "./AddDeviceModal";
 
 const MainLayout = () => {
-  const { modalOverlay, modal, openAddDeviceModal, addDevice, profile } =
+  const { profile, setToggleSidebar, toggleSidebar } =
     useContext(pollutantsContext);
 
   return (
     <>
       {/* start sidebar */}
-      <Sidebar openAddDeviceModal={openAddDeviceModal} />
+      <Sidebar />
       {/* end sidebar */}
 
       {/* start main section */}
@@ -59,14 +59,48 @@ const MainLayout = () => {
         {/* main section */}
         <Outlet />
         {/* add device btn */}
+
+        {/* add device btn */}
+        <div
+          className="text-white fixed bottom-[3rem] z-50 right-6 h-[4rem] w-[4rem] bg-tetiary flex justify-center items-center rounded-full text-[1rem] font-bold cursor-pointer sm:hidden"
+          onClick={() => setToggleSidebar(!toggleSidebar)}
+        >
+          {!toggleSidebar ? (
+            <svg
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              ></path>
+            </svg>
+          ) : (
+            <svg
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          )}
+        </div>
       </div>
-      {/* Add device modal */}
-      <AddDeviceModal
-        modalOverlay={modalOverlay}
-        modal={modal}
-        openAddDeviceModal={openAddDeviceModal}
-        addDevice={addDevice}
-      />
+
       {/* end main section */}
     </>
   );

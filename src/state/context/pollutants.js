@@ -31,6 +31,7 @@ const PollutantsProvider = ({ children }) => {
   const [profile, setProfile] = useState({});
   const [addingDevice, setAddingDevice] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [toggleSidebar, setToggleSidebar] = useState(false);
   const navigate = useNavigate();
 
   // safe pollutant reading
@@ -44,9 +45,6 @@ const PollutantsProvider = ({ children }) => {
     FLAME: 23,
   };
 
-  const modalOverlay = useRef(null);
-  const modal = useRef(null);
-
   const updatePollutants = () => {
     setPollutants({
       PM1: 0.2,
@@ -57,29 +55,6 @@ const PollutantsProvider = ({ children }) => {
       TVOC: 1,
       FLAME: 2.3,
     });
-  };
-
-  const openAddDeviceModal = (isOpen) => {
-    console.log("hello barbie");
-    // modal class
-    const modalCl = modal.current.classList;
-    const overlayCl = modalOverlay.current.classList;
-
-    if (isOpen) {
-      overlayCl.remove("hidden");
-      setTimeout(() => {
-        modalCl.remove("opacity-0");
-        modalCl.remove("-translate-y-full");
-        modalCl.remove("scale-150");
-      }, 100);
-    } else {
-      modalCl.add("-translate-y-full");
-      setTimeout(() => {
-        modalCl.add("opacity-0");
-        modalCl.add("scale-150");
-      }, 100);
-      setTimeout(() => overlayCl.add("hidden"), 300);
-    }
   };
 
   // check of user is signed in and return their uid
@@ -212,15 +187,14 @@ const PollutantsProvider = ({ children }) => {
   const data = {
     pollutants,
     updatePollutants,
-    modalOverlay,
-    modal,
-    openAddDeviceModal,
     isSafe,
     adReadings,
     profile,
     addDevice,
     authenticateUser,
     userId,
+    toggleSidebar,
+    setToggleSidebar,
   };
 
   return (

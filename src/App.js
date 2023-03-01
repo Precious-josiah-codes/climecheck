@@ -9,6 +9,7 @@ import Pollutants from "./pages/pollutants";
 import MainLayout from "./components/MainLayout";
 import { pollutantsContext } from "./state/context/pollutants";
 import Loader from "./components/Loader";
+import AddDevice from "./pages/AddDevice";
 
 function App() {
   const { profile, userId } = useContext(pollutantsContext);
@@ -37,6 +38,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/pollutant_readings" element={<Pollutants />} />
+          <Route path="/add_device" element={<AddDevice />} />
         </Route>
       </Routes>
     </div>

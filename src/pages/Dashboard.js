@@ -7,15 +7,14 @@ import Loader from "../components/Loader";
 import { pollutantsContext } from "../state/context/pollutants";
 
 const Dashboard = () => {
-  const { openAddDeviceModal, profile } = useContext(pollutantsContext);
+  const { profile } = useContext(pollutantsContext);
 
   // usenavigate instance
   const navigate = useNavigate();
 
-  console.log(profile, "this is it");
-
   // go to pollutants readings
   function goToPollutants() {
+    console.log("this is the pollutants");
     navigate("/pollutant_readings");
   }
 
@@ -99,28 +98,6 @@ const Dashboard = () => {
         ) : (
           <div className="text-center pt-9 text-white">You have no devices</div>
         )}
-      </div>
-
-      {/* add device btn */}
-      <div
-        className="text-white fixed bottom-[3rem] right-6 h-[4rem] w-[4rem] bg-tetiary flex justify-center items-center rounded-full animate-pulse text-[1rem] font-bold cursor-pointer"
-        onClick={() => openAddDeviceModal(true)}
-      >
-        <svg
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          className="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 4.5v15m7.5-7.5h-15"
-          ></path>
-        </svg>
       </div>
 
       {/* end main section */}
