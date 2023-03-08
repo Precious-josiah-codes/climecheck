@@ -1,10 +1,13 @@
 import { createContext, useEffect, useReducer, useRef, useState } from "react";
 // import { pollutantsReducer, pollutantData } from "../reducer/pollutants";
 import { db, auth, provider } from "../../firebase";
+
 import {
   signInWithPopup,
   GoogleAuthProvider,
   onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 import {
@@ -33,6 +36,7 @@ const PollutantsProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const navigate = useNavigate();
+  const [authSuccess, setAuthSuccess] = useState(false);
 
   // safe pollutant reading
   const isSafe = {
@@ -107,6 +111,47 @@ const PollutantsProvider = ({ children }) => {
     };
   };
 
+  // sign up with email and password
+  const signUpWithEmailPassword = (email, password) => {
+    setAuthSuccess(true);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        const username = email.split("@")[0];
+        createUserProfile(user.uid, username, email);
+        // ...
+      })
+      .catch((error) => {
+        setAuthSuccess(false);
+
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+  };
+
+  const signInWithEmailPassword = (email, password) => {
+    setAuthSuccess(true);
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        setAuthSuccess(false);
+
+        // redirect the user
+        navigate("/");
+        // ...
+      })
+      .catch((error) => {
+        setAuthSuccess(false);
+
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
+
   // add device to user profile
   const addDevice = async (deviceName, sensorNumber) => {
     setAddingDevice(true);
@@ -133,7 +178,7 @@ const PollutantsProvider = ({ children }) => {
         // The signed-in user info.
         const user = result.user;
         createUserProfile(user.uid, user.displayName, user.email);
-        console.log(user, "hey auth");
+        console.log(user, token, "hey auth");
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       })
@@ -145,6 +190,7 @@ const PollutantsProvider = ({ children }) => {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(errorMessage, email, credential, "something went wong");
         // ...
       });
   };
@@ -159,6 +205,8 @@ const PollutantsProvider = ({ children }) => {
       devices: [],
     }).then(() => {
       // redirect the user
+      setAuthSuccess(false);
+
       navigate("/");
     });
   };
@@ -195,6 +243,9 @@ const PollutantsProvider = ({ children }) => {
     userId,
     toggleSidebar,
     setToggleSidebar,
+    signUpWithEmailPassword,
+    signInWithEmailPassword,
+    authSuccess,
   };
 
   return (

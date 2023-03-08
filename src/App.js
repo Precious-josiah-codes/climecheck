@@ -25,15 +25,19 @@ function App() {
     goAuth();
   }, []);
 
+  console.log(profile, "this is the profile");
+
   // checking if profile has loaaded
-  if (!Object.keys(profile).length && path !== "/auth/sign_up") {
-    return <Loader />;
+  if (profile) {
+    if (!Object?.keys(profile)?.length && path !== "/auth/sign_up") {
+      return <Loader />;
+    }
   }
   return (
     <div className={`bg-secondaryColor font-Poppins h-auto`}>
       <Routes>
         <Route path="/auth/sign_up" element={<SignUp />} />
-        {/* <Route path="/auth/sign_in" element={<SignIn />} /> */}
+        <Route path="/auth/sign_in" element={<SignIn />} />
 
         <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<Dashboard />} />
