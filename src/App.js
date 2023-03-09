@@ -29,7 +29,7 @@ function App() {
 
   // checking if profile has loaaded
   if (profile) {
-    if (!Object?.keys(profile)?.length && path !== "/auth/sign_up") {
+    if (!Object?.keys(profile)?.length && !path.includes("/auth/sign")) {
       return <Loader />;
     }
   }
