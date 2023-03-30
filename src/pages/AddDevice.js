@@ -6,14 +6,27 @@ const AddDevice = () => {
   const [deviceName, setdeviceName] = useState("");
   const [sensorNumber, setsensorNumber] = useState("");
   const [addDeviceLoader, setaddDeviceLoader] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   async function addDeviceFn() {
-    setaddDeviceLoader(true);
-    await addDevice(deviceName, parseInt(sensorNumber)).then(() => {
-      setdeviceName(" ");
-      setsensorNumber(" ");
-      setaddDeviceLoader(false);
-    });
+    if (!deviceName.length || sensorNumber.length <= 7) {
+      setError(
+        "Invalid device name or sensor number. also sensor number should be up to 8 characters"
+      );
+      setSuccess("");
+    } else {
+      setaddDeviceLoader(true);
+      await addDevice(deviceName, parseInt(sensorNumber)).then(() => {
+        setdeviceName(" ");
+        setsensorNumber(" ");
+        setaddDeviceLoader(false);
+        setError("");
+        setSuccess(
+          "Device has been added successfully, check dashboard to view devices"
+        );
+      });
+    }
   }
 
   return (
@@ -33,8 +46,9 @@ const AddDevice = () => {
 
         {/* Sensor number */}
         <input
-          type="email"
+          type="text"
           id="helper-text"
+          maxLength="8"
           aria-describedby="helper-text-explanation"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Enter sensor number"
@@ -43,22 +57,15 @@ const AddDevice = () => {
         />
 
         {/* error status */}
-        {!deviceName.length ||
-          (sensorNumber.length <= 7 && (
-            <div className="text-red-500">
-              Invalid device name or sensor number. also sensor number should be
-              up to 8 characters
-            </div>
-          ))}
+        {error.length > 1 && <div className="text-red-500">{error}</div>}
+
+        {/* success status */}
+        {success.length > 1 && <div className="text-tetiary">{success}</div>}
 
         {/* add device btn */}
         <button
           type="button"
-          className={`"text-white bg-tetiary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-base px-6 py-3 text-center w-full ${
-            !deviceName.length || sensorNumber.length <= 7
-              ? "pointer-events-none"
-              : "pointer-events-auto"
-          }`}
+          className={`"text-white bg-tetiary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-base px-6 py-3 text-center w-full`}
           onClick={addDeviceFn}
         >
           {!addDeviceLoader ? "Add Device" : "Adding....."}

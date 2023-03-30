@@ -83,7 +83,7 @@ const Dashboard = () => {
                 <div className="text-[14px] sm:text-[16px]">
                   TOTAL POLLUTANT
                 </div>
-                <div className="text-[16px]">7</div>
+                <div className="text-[16px]">3</div>
               </div>
             </div>
           </div>

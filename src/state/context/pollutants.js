@@ -22,15 +22,7 @@ import { useNavigate } from "react-router-dom";
 export const pollutantsContext = createContext();
 
 const PollutantsProvider = ({ children }) => {
-  const [pollutants, setPollutants] = useState({
-    PM1: 0.23,
-    PM25: 930,
-    PM10: 90,
-    CO: 32,
-    CO2: 30.3,
-    TVOC: 21,
-    FLAME: 23.3,
-  });
+  const [pollutants, setPollutants] = useState({});
   const [profile, setProfile] = useState({});
   const [addingDevice, setAddingDevice] = useState(false);
   const [userId, setUserId] = useState(null);
@@ -82,30 +74,34 @@ const PollutantsProvider = ({ children }) => {
   }, []);
 
   // useEffect for getting device pollutants  //
-  useEffect(() => {
+  // useEffect(() => {}, []);
+  const getPollutants = () => {
     const unsub = onSnapshot(
       doc(db, "pollutants", "JUbyJYjbjvtzD9awuPDT"),
       (doc) => {
         let readings = doc.data().readings;
         let currentReading = readings[readings.length - 1];
         setPollutants(currentReading);
-        console.log(currentReading);
+        console.log(currentReading, "this is the current reading");
       }
     );
 
     return () => {
       unsub();
     };
-  }, []);
+  };
 
   // const get the user profile
   const getUserProfile = (userId) => {
     const unsub = onSnapshot(doc(db, "users", userId), (doc) => {
       setProfile(doc.data());
 
+      if (doc.data().devices.length) {
+        getPollutants();
+      }
+
       console.log(doc.data(), "user profile");
     });
-
     return () => {
       unsub();
     };
