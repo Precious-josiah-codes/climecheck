@@ -74,17 +74,13 @@ const PollutantsProvider = ({ children }) => {
   }, []);
 
   // useEffect for getting device pollutants  //
-  // useEffect(() => {}, []);
-  const getPollutants = () => {
-    const unsub = onSnapshot(
-      doc(db, "pollutants", "JUbyJYjbjvtzD9awuPDT"),
-      (doc) => {
-        let readings = doc.data().readings;
-        let currentReading = readings[readings.length - 1];
-        setPollutants(currentReading);
-        console.log(currentReading, "this is the current reading");
-      }
-    );
+  const getPollutants = (deviceId) => {
+    const unsub = onSnapshot(doc(db, "devices", deviceId), (doc) => {
+      let readings = doc.data().readings;
+      let currentReading = readings[readings.length - 1];
+      setPollutants(currentReading);
+      console.log(currentReading, "this is the current reading");
+    });
 
     return () => {
       unsub();
@@ -97,11 +93,10 @@ const PollutantsProvider = ({ children }) => {
       setProfile(doc.data());
 
       if (doc.data().devices.length) {
-        getPollutants();
+        getPollutants(doc.data().devices[0].deviceNumber);
       }
-
-      console.log(doc.data(), "user profile");
     });
+
     return () => {
       unsub();
     };
@@ -149,19 +144,30 @@ const PollutantsProvider = ({ children }) => {
   };
 
   // add device to user profile
-  const addDevice = async (deviceName, sensorNumber) => {
+  const addDevice = async (deviceName, deviceNumber) => {
     setAddingDevice(true);
-    // if(s)
-    console.log(deviceName, sensorNumber);
-    const useProfileRef = doc(db, "users", userId);
 
-    // Atomically add a new region to the "regions" array field.
-    await updateDoc(useProfileRef, {
-      devices: arrayUnion({
-        deviceName,
-        sensorNumber,
-      }),
-    });
+    // checking if device with device ID exist
+    const deviceRef = doc(db, "devices", deviceNumber);
+    const deviceSnap = await getDoc(deviceRef);
+
+    // if it exist add the device to the users profile
+    // else throw an error
+    if (deviceSnap.exists()) {
+      const useProfileRef = doc(db, "users", userId);
+
+      await updateDoc(useProfileRef, {
+        devices: arrayUnion({
+          deviceName,
+          deviceNumber,
+        }),
+      });
+      console.log("Document data:", deviceSnap.data());
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+      throw Error("Invalid Device ID");
+    }
   };
 
   // sign in user
@@ -208,7 +214,7 @@ const PollutantsProvider = ({ children }) => {
   };
 
   const adReadings = async () => {
-    const pollutantRef = doc(db, "pollutants", "JUbyJYjbjvtzD9awuPDT");
+    const pollutantRef = doc(db, "devices", "VYDXXCiTFfNyunTYQGSW");
 
     // Atomically add a new region to the "regions" array field.
     await updateDoc(pollutantRef, {

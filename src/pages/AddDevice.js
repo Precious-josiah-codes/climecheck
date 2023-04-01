@@ -17,15 +17,20 @@ const AddDevice = () => {
       setSuccess("");
     } else {
       setaddDeviceLoader(true);
-      await addDevice(deviceName, parseInt(sensorNumber)).then(() => {
-        setdeviceName(" ");
-        setsensorNumber(" ");
-        setaddDeviceLoader(false);
-        setError("");
-        setSuccess(
-          "Device has been added successfully, check dashboard to view devices"
-        );
-      });
+      await addDevice(deviceName, sensorNumber)
+        .then(() => {
+          setdeviceName(" ");
+          setsensorNumber(" ");
+          setaddDeviceLoader(false);
+          setError("");
+          setSuccess(
+            "Device has been added successfully, check dashboard to view devices"
+          );
+        })
+        .catch((err) => {
+          setaddDeviceLoader(false);
+          setError(err.message);
+        });
     }
   }
 

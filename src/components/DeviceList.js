@@ -21,7 +21,7 @@ const DeviceList = ({ goToPollutants, devices }) => {
                 #{index + 1}
               </th>
               <td class="px-6 py-4">{device.deviceName}</td>
-              <td class="px-6 py-4">{device.sensorNumber}</td>
+              <td class="px-6 py-4">{device.deviceNumber}</td>
             </tr>
           ))}
         </tbody>

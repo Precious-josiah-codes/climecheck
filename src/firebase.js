@@ -8,12 +8,12 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyD0BssAv8wCzctMB3brSpEt2B5GyPBaWOM",
-  authDomain: "climecheck-mvp.firebaseapp.com",
-  projectId: "climecheck-mvp",
-  storageBucket: "climecheck-mvp.appspot.com",
-  messagingSenderId: "954749319912",
-  appId: "1:954749319912:web:3d0ee3a9861775aa87a75d",
+  apiKey: "AIzaSyA6rn6_EimgtzEstyZ7IFrVsctdxdXKgWM",
+  authDomain: "climecheck-71fca.firebaseapp.com",
+  projectId: "climecheck-71fca",
+  storageBucket: "climecheck-71fca.appspot.com",
+  messagingSenderId: "531424213005",
+  appId: "1:531424213005:web:cc913735682fe7d99cfd44",
 };
 
 // Initialize Firebase
